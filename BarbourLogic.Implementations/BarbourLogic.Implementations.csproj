@@ -5,4 +5,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BarbourLogic.Abstractions\BarbourLogic.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

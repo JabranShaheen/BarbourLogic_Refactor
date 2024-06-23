@@ -16,4 +16,13 @@
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BarbourLogic.Abstractions\BarbourLogic.Abstractions.csproj" />
+    <ProjectReference Include="..\BarbourLogic.Implementations\BarbourLogic.Implementations.csproj" />
+  </ItemGroup>
+
 </Project>
