@@ -5,6 +5,7 @@ using BarbourLogic.Abstractions.Repository;
 using BarbourLogic.Application;
 using BarbourLogic.Abstractions.Services.BarbourLogic.Abstractions.Services;
 using BarbourLogic.Abstractions.Entities;
+using BarbourLogic.Implementations.Services;
 
 namespace BarbourLogic.Tests
 {
@@ -78,6 +79,32 @@ namespace BarbourLogic.Tests
 
             // Check updated balance
             mockRepository.Verify(r => r.UpdateAccount(It.Is<Account>(a => a.Id == accountId && a.Balance == initialBalance + depositAmount)), Times.Once);
+        }
+
+        [TestMethod]
+        public void WithdrawMoney_Should_Decrease_Account_Balance()
+        {
+            // Arrange
+            var mockRepository = new Mock<IAccountRepository>();
+            IAccountManager accountManager = new AccountManager(mockRepository.Object);
+
+            string accountId = "1";
+            double initialBalance = 100.0;
+            double withdrawalAmount = 50.0;
+
+            // Mock repository behavior
+            mockRepository.Setup(r => r.GetAccountById(accountId))
+                          .Returns(new Account { Id = accountId, Balance = initialBalance });
+
+            // Act
+            accountManager.WithdrawMoney(accountId, withdrawalAmount);
+
+            // Assert
+            mockRepository.Verify(r => r.GetAccountById(accountId), Times.Once);
+            mockRepository.Verify(r => r.UpdateAccount(It.IsAny<Account>()), Times.Once);
+
+            // Check updated balance
+            mockRepository.Verify(r => r.UpdateAccount(It.Is<Account>(a => a.Id == accountId && a.Balance == initialBalance - withdrawalAmount)), Times.Once);
         }
     }
 }

@@ -1,13 +1,18 @@
-﻿using BarbourLogic.Abstractions.Entities;
-using System;
-using System.Collections.Generic;
-using System.Security.Principal;
+﻿using System;
+using BarbourLogic.Abstractions.Repository;
+using BarbourLogic.Application;
+using BarbourLogic.Abstractions.Entities;
+using BarbourLogic.Abstractions.Services.BarbourLogic.Abstractions.Services;
+using BarbourLogic.Application.Exceptions;
+using BarbourLogic.Implementations.Services;
+using BarbourLogic.Implementations;
 
 namespace BankingSystem
 {
     class Program
     {
-        static List<Account> accounts = new List<Account>();
+        // Injected AccountManager instance
+        private static readonly IAccountManager accountManager = new AccountManager(new AccountRepository());
 
         static void Main(string[] args)
         {
@@ -36,6 +41,7 @@ namespace BankingSystem
                         DisplayAccountDetails();
                         break;
                     case "5":
+                        Environment.Exit(0);
                         break;
                     default:
                         Console.WriteLine("Invalid choice.");
@@ -50,9 +56,9 @@ namespace BankingSystem
             var id = Console.ReadLine();
 
             Console.WriteLine("Enter Account Holder Name:");
-            var name = Console.Read().ToString();
-            Account account = new Account { Id = id, Name = name, Balance = 0 };
-            accounts.Add(account);
+            var name = Console.ReadLine();
+
+            accountManager.AddAccount(id, name);
 
             Console.WriteLine("Account added successfully.");
         }
@@ -65,17 +71,15 @@ namespace BankingSystem
             Console.WriteLine("Enter Amount to Deposit:");
             double amount = double.Parse(Console.ReadLine());
 
-            foreach (var account in accounts)
+            try
             {
-                if (account.Id == id)
-                {
-                    account.Balance += amount;
-                    Console.WriteLine("Deposit successful.");
-                    return;
-                }
+                accountManager.DepositMoney(id, amount);
+                Console.WriteLine("Deposit successful.");
             }
-
-            Console.WriteLine("Account not found.");
+            catch (AccountNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         static void WithdrawMoney()
@@ -86,24 +90,19 @@ namespace BankingSystem
             Console.WriteLine("Enter Amount to Withdraw:");
             double amount = double.Parse(Console.ReadLine());
 
-            foreach (var account in accounts)
+            try
             {
-                if (account.Id == id)
-                {
-                    if (account.Balance >= amount)
-                    {
-                        account.Balance -= amount;
-                        Console.WriteLine("Withdrawal successful.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Insufficient balance.");
-                    }
-                    return;
-                }
+                accountManager.WithdrawMoney(id, amount);
+                Console.WriteLine("Withdrawal successful.");
             }
-
-            Console.WriteLine("Account not found.");
+            catch (AccountNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (InsufficientBalanceException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         static void DisplayAccountDetails()
@@ -111,18 +110,17 @@ namespace BankingSystem
             Console.WriteLine("Enter Account ID:");
             string id = Console.ReadLine();
 
-            foreach (var account in accounts)
+            try
             {
-                if (account.Id == id)
-                {
-                    Console.WriteLine($"Account ID: {account.Id}");
-                    Console.WriteLine($"Account Holder: {account.Name}");
-                    Console.WriteLine($"Balance: {account.Balance}");
-                    return;
-                }
+                var account = accountManager.GetAccountDetails(id);
+                Console.WriteLine($"Account ID: {account.Id}");
+                Console.WriteLine($"Account Holder: {account.Name}");
+                Console.WriteLine($"Balance: {account.Balance}");
             }
-
-            Console.WriteLine("Account not found.");
+            catch (AccountNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

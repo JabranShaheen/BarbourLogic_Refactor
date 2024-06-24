@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BarbourLogic.Abstractions\BarbourLogic.Abstractions.csproj" />
+    <ProjectReference Include="..\BarbourLogic.Implementations\BarbourLogic.Implementations.csproj" />
   </ItemGroup>
 
 </Project>
