@@ -29,8 +29,8 @@ namespace BarbourLogic.Implementations
 
         public void UpdateAccount(Account account)
         {
-            // TODO: Implement logic to update an account in a data store.
-            throw new System.NotImplementedException();
+
+            _accounts[account.Id] = account;
         }
     }
 }
