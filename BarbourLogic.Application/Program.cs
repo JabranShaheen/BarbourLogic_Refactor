@@ -1,7 +1,6 @@
 ﻿using System;
 using BarbourLogic.Abstractions.Repository;
-using BarbourLogic.Application;
-using BarbourLogic.Abstractions.Entities;
+using BarbourLogic.Abstractions.Services;
 using BarbourLogic.Abstractions.Services.BarbourLogic.Abstractions.Services;
 using BarbourLogic.Application.Exceptions;
 using BarbourLogic.Implementations.Services;
@@ -21,8 +20,9 @@ namespace BankingSystem
                 Console.WriteLine("1. Add Account");
                 Console.WriteLine("2. Deposit Money");
                 Console.WriteLine("3. Withdraw Money");
-                Console.WriteLine("4. Display Account Details");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("4. Transfer Money");
+                Console.WriteLine("5. Display Account Details");
+                Console.WriteLine("6. Exit");
 
                 string choice = Console.ReadLine();
 
@@ -38,9 +38,12 @@ namespace BankingSystem
                         WithdrawMoney();
                         break;
                     case "4":
-                        DisplayAccountDetails();
+                        TransferMoney();
                         break;
                     case "5":
+                        DisplayAccountDetails();
+                        break;
+                    case "6":
                         Environment.Exit(0);
                         break;
                     default:
@@ -94,6 +97,32 @@ namespace BankingSystem
             {
                 accountManager.WithdrawMoney(id, amount);
                 Console.WriteLine("Withdrawal successful.");
+            }
+            catch (AccountNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (InsufficientBalanceException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        static void TransferMoney()
+        {
+            Console.WriteLine("Enter Source Account ID:");
+            string sourceId = Console.ReadLine();
+
+            Console.WriteLine("Enter Destination Account ID:");
+            string destinationId = Console.ReadLine();
+
+            Console.WriteLine("Enter Amount to Transfer:");
+            double amount = double.Parse(Console.ReadLine());
+
+            try
+            {
+                accountManager.TransferMoney(sourceId, destinationId, amount);
+                Console.WriteLine("Transfer successful.");
             }
             catch (AccountNotFoundException ex)
             {

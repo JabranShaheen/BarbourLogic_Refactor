@@ -34,11 +34,21 @@ namespace BarbourLogic.Abstractions.Services
             void WithdrawMoney(string id, double amount);
 
             /// <summary>
+            /// Transfers the specified amount of money from the source account to the destination account.
+            /// </summary>
+            /// <param name="sourceId">The unique identifier of the source account.</param>
+            /// <param name="destinationId">The unique identifier of the destination account.</param>
+            /// <param name="amount">The amount of money to transfer.</param>
+            void TransferMoney(string sourceId, string destinationId, double amount);
+
+            /// <summary>
             /// Retrieves the details of the account with the given ID.
             /// </summary>
             /// <param name="id">The unique identifier for the account.</param>
             /// <returns>The account with the specified ID, or null if not found.</returns>
             Account GetAccountDetails(string id);
+
+
         }
     }
 
