@@ -30,11 +30,13 @@ This is a simple console-based banking system application demonstrating account 
 3.	Exception Handling: Custom exceptions such as AccountNotFoundException and InsufficientBalanceException are used for handling errors.
 4.	Initial Balance: New accounts are created with an initial balance of zero.
 5.	Console Input: All inputs are taken via the console interface.
-Project Structure
-•	BarbourLogic.Abstractions: Contains the interface definitions for repositories and services.
-•	BarbourLogic.Application: Contains application logic and services implementations.
-•	BarbourLogic.Implementations: Contains the concrete implementations of repositories and services.
-•	BarbourLogic.Tests: Contains unit tests for the application.
+   
+#### Project Structure
+	BarbourLogic.Abstractions: Contains the interface definitions for repositories and services.
+	BarbourLogic.Application: Contains application logic and services implementations.
+	BarbourLogic.Implementations: Contains the concrete implementations of repositories and services.
+	BarbourLogic.Tests: Contains unit tests for the application.
+
 Running the Application
 1.	Run the application using the provided setup instructions.
 2.	Follow the console prompts to add accounts, deposit, withdraw, display details, and transfer money between accounts.
