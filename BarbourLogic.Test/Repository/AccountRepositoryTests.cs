@@ -43,5 +43,6 @@ namespace BarbourLogic.Tests
             Assert.AreEqual("Jane Doe", updatedAccount.Name, "Account name should be updated.");
             Assert.AreEqual(100.0, updatedAccount.Balance, "Account balance should remain unchanged.");
         }
+
     }
 }

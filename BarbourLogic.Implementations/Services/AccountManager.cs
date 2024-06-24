@@ -23,8 +23,10 @@ namespace BarbourLogic.Application
 
         public void DepositMoney(string id, double amount)
         {
-            // Implementation to be added
-            throw new System.NotImplementedException();
+            var account = _accountRepository.GetAccountById(id);
+            account.Balance += amount;
+            _accountRepository.UpdateAccount(account);
+
         }
 
         public void WithdrawMoney(string id, double amount)
@@ -35,8 +37,9 @@ namespace BarbourLogic.Application
 
         public Account GetAccountDetails(string id)
         {
-            // Implementation to be added
-            throw new System.NotImplementedException();
+            // Retrieve account details from repository
+            return _accountRepository.GetAccountById(id);
         }
+
     }
 }
